@@ -15,9 +15,10 @@ class LivroController {
             // utilizando os parâmetros err, livros
             if (err) {
                 res.status(404).send(
-                    { message: 'Livro não encontrado', 
-                    error: err.message 
-                })
+                    {
+                        message: 'Livro não encontrado',
+                        error: err.message
+                    })
             } else {
                 res.status(200).json(livros)
             }
@@ -30,9 +31,10 @@ class LivroController {
         livro.save(err => {
             if (err) {
                 res.status(500).send(
-                    { message: 'Erro ao salvar o livro.', 
-                    error: err.message 
-                })
+                    {
+                        message: 'Erro ao salvar o livro.',
+                        error: err.message
+                    })
             } else {
                 res.status(201).send(livro.toJSON())
             }
@@ -41,16 +43,37 @@ class LivroController {
 
     static deleteBook = (req, res) => {
         const id = req.params.id
+
+        console.log('id', id)
         livros.findByIdAndDelete(id, (err) => {
             // tratar o erro ou o sucesso, baseado na função de callback, 
             // utilizando os parâmetros err, livros
             if (err) {
+                console.log('1')
                 res.status(404).send(
-                    { message: 'Não foi possível deletar! Livro não encontrado', 
-                    error: err.message 
-                })
+                    {
+                        message: 'Não foi possível deletar! Livro não encontrado',
+                        error: err.message
+                    })
             } else {
-                res.status(200).json(livros)
+                console.log('2')
+                res.status(200).send({ message: 'O livro foi deletado' })
+            }
+        })
+    }
+
+    static updateBook = (req, res) => {
+        let id = req.params.id
+
+        livros.findByIdAndUpdate(id, { $set: req.body }, (err) => {
+            if (err) {
+                res.status(404).send(
+                    {
+                        message: 'Não foi possível atualizar! Livro não encontrado',
+                        error: err.message
+                    })
+            } else {
+                
             }
         })
     }

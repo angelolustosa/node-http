@@ -7,5 +7,6 @@ routes
     .get('/livros', LivroController.findAll)
     .get('/livro/:id', LivroController.findById)
     .post('/livro', LivroController.createBook)
+    .delete('/livro/:id', LivroController.deleteBook)
 
 module.exports = routes
