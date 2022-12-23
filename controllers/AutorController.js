@@ -1,46 +1,42 @@
-const livros = require('../models/Livro')
+const autores = require('../models/Autor')
 
-class LivroController {
+class AutorController {
 
     static findAll = (req, res) => {
-        livros.find()
-        .populate('autor')
-        .exec((err, livros) => {
-            res.status(200).json(livros)
+        autores.find((err, autores) => {
+            res.status(200).json(autores)
         })
     }
 
     static findById = (req, res) => {
         const id = req.params.id
-        livros.findById(id)
-        .populate('autor')
-        .exec((err, livros) => {
+        autores.findById(id, (err, autores) => {
             // tratar o erro ou o sucesso, baseado na função de callback, 
-            // utilizando os parâmetros err, livros
+            // utilizando os parâmetros err, autores
             if (err) {
                 res.status(404).send(
                     {
-                        message: 'Livro não encontrado',
+                        message: 'Autor não encontrado',
                         error: err.message
                     })
             } else {
-                res.status(200).json(livros)
+                res.status(200).json(autores)
             }
         })
     }
 
     static createBook = (req, res) => {
-        let livro = new livros(req.body)
+        let autor = new autores(req.body)
 
-        livro.save(err => {
+        autor.save(err => {
             if (err) {
                 res.status(500).send(
                     {
-                        message: 'Erro ao salvar o livro.',
+                        message: 'Erro ao salvar o autor.',
                         error: err.message
                     })
             } else {
-                res.status(201).send(livro.toJSON())
+                res.status(201).send(autor.toJSON())
             }
         })
     }
@@ -49,19 +45,19 @@ class LivroController {
         const id = req.params.id
 
         console.log('id', id)
-        livros.findByIdAndDelete(id, (err) => {
+        autores.findByIdAndDelete(id, (err) => {
             // tratar o erro ou o sucesso, baseado na função de callback, 
-            // utilizando os parâmetros err, livros
+            // utilizando os parâmetros err, autores
             if (err) {
                 console.log('1')
                 res.status(404).send(
                     {
-                        message: 'Não foi possível deletar! Livro não encontrado',
+                        message: 'Não foi possível deletar! Autor não encontrado',
                         error: err.message
                     })
             } else {
                 console.log('2')
-                res.status(200).send({ message: 'O livro foi deletado' })
+                res.status(200).send({ message: 'O autor foi deletado' })
             }
         })
     }
@@ -69,18 +65,18 @@ class LivroController {
     static updateBook = (req, res) => {
         let id = req.params.id
 
-        livros.findByIdAndUpdate(id, { $set: req.body }, (err) => {
+        autores.findByIdAndUpdate(id, { $set: req.body }, (err) => {
             if (err) {
                 res.status(404).send(
                     {
-                        message: 'Não foi possível atualizar! Livro não encontrado',
+                        message: 'Não foi possível atualizar! Autor não encontrado',
                         error: err.message
                     })
             } else {
-                res.status(200).send({ message: 'O livro foi atualizado' })
+                res.status(200).send({ message: 'O autor foi atualizado' })
             }
         })
     }
 }
 
-module.exports = LivroController
+module.exports = AutorController
